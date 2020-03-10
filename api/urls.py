@@ -14,9 +14,9 @@ from rest_framework import routers
 # ]
 
 urlpatterns = [
-    path('students/', views.getStudentViewSet.as_view()),
-    path('instructors/', views.getInstructorViewSet.as_view()),
-    path('lessons/', views.getLessonViewSet.as_view()),
+    path('students/', views.StudentsListCreateViewSet.as_view()),
+    path('instructors/', views.InstructorListCreateViewSet.as_view()),
+    path('lessons/', views.LessonListCreateViewSet.as_view()),
     path('delete/<int:pk>', views.deleteLessonViewSet.as_view({'delete':'destroy'}))
     # path('api/^', router.urls)
 ]

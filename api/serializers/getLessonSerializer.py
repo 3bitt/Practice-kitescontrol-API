@@ -5,12 +5,10 @@ from .StudentSerializer import StudentSerializer
 from .InstructorSerializer import InstructorSerializer
 
 
-class LessonSerializer(serializers.ModelSerializer):
-    # instructor = serializers.PrimaryKeyRelatedField(queryset=Instructor.objects.all(), many=True)
+class getLessonSerializer(serializers.ModelSerializer):
+
     instructor = serializers.StringRelatedField(many=True)
     student = serializers.StringRelatedField(many=True)
-    # student = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all().order_by('-name'), many=True)
-
 
     # instructor = serializers.SerializerMethodField(read_only=True)
     # student = serializers.SerializerMethodField(read_only=True)
@@ -25,28 +23,10 @@ class LessonSerializer(serializers.ModelSerializer):
         model = Lesson
         fields = ['id', 'created_date', 'student', 'instructor', 'duration', 'paid']
 
-    # instructor = InstructorSerializer()
+class postLessonSerializer(serializers.ModelSerializer):
+    student = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all().order_by('-name'), many=True)
+    instructor = serializers.PrimaryKeyRelatedField(queryset=Instructor.objects.all(), many=True)
 
-
-    # def create(self, validated_data):
-    #     instructors = validated_data.pop('instructor')
-    #     students = validated_data.pop('student')
-    #
-    #     lesson = Lesson.objects.create(**validated_data)
-    #
-    #     # lessToPerson = Lesson_to_Person.objects.create(lesson_id=lesson,
-    #     #                                                instructor_id=)
-    #
-    #
-    #     # for instr in instructors:
-    #     #     for stud in students:
-    #     #         Lesson_to_Person.objects.create(lesson_id=lesson, instructor_id=instr, student_id=stud)
-    #     #
-    #
-    #     for instr in instructors:
-    #         lesson.instructor.add(instr)
-    #         # lessToPerson.instructor_id.add(instr)
-    #     for stud in students:
-    #         lesson.student.add(stud)
-    #         # lessToPerson.student_id.add(stud)
-    #     return lesson
+    class Meta:
+        model = Lesson
+        fields = ['id', 'created_date', 'student', 'instructor', 'duration', 'paid']

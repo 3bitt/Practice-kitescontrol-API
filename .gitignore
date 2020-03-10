@@ -136,7 +136,7 @@ dmypy.json
 
 # MY CUSTOM IGNORE
 .idea/**
-.api/migrations/**
+api/migrations
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
