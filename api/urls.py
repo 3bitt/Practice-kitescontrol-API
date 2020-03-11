@@ -17,6 +17,7 @@ urlpatterns = [
     path('students/', views.StudentsListCreateViewSet.as_view()),
     path('instructors/', views.InstructorListCreateViewSet.as_view()),
     path('lessons/', views.LessonListCreateViewSet.as_view()),
+    path('lessons/<pk>', views.LessonRetrieveUpdateDeleteViewSet.as_view()),
     path('delete/<int:pk>', views.deleteLessonViewSet.as_view({'delete':'destroy'}))
     # path('api/^', router.urls)
 ]

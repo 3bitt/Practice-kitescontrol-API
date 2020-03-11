@@ -21,18 +21,30 @@ class InstructorListCreateViewSet(generics.ListCreateAPIView):
     queryset = Instructor.objects.all()
     serializer_class = InstructorSerializer.InstructorSerializer
 
-class LessonListCreateViewSet(MultiSerializerViewSetMixin.MultiSerializerViewSetMixin, generics.ListCreateAPIView):
+class LessonListCreateViewSet(generics.ListCreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = getLessonSerializer.getLessonSerializer
-    serializer_action_classes = {
-        'list': getLessonSerializer.getLessonSerializer,
-        'post': getLessonSerializer.postLessonSerializer
-    }
+
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return getLessonSerializer.postLessonSerializer
         elif self.request.method == 'GET':
             return getLessonSerializer.getLessonSerializer
+
+class LessonRetrieveUpdateDeleteViewSet(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Lesson.objects.all()
+    serializer_class = getLessonSerializer.getLessonSerializer
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     filtered_qs = self.queryset.filter(pk='id')
+    #
+    #
+    # def get_serializer_class(self):
+    #     if self.request.method == 'POST':
+    #         return getLessonSerializer.postLessonSerializer
+    #     elif self.request.method == 'GET':
+    #         return getLessonSerializer.getLessonSerializer
 
 
 class deleteLessonViewSet(viewsets.ModelViewSet):
