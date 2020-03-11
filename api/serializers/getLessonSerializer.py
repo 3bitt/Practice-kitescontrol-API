@@ -7,11 +7,17 @@ from .InstructorSerializer import InstructorSerializer
 
 class getLessonSerializer(serializers.ModelSerializer):
 
-    instructor = serializers.StringRelatedField(many=True)
-    student = serializers.StringRelatedField(many=True)
+    # instructor = serializers.StringRelatedField(many=True)
+    # student = serializers.StringRelatedField(many=True)
+    instructor = InstructorSerializer(many=True)
+    student = StudentSerializer(many=True)
+
     class Meta:
         model = Lesson
         fields = ['id', 'created_date', 'student', 'instructor', 'duration', 'paid']
+
+    # def create(self, validated_data):
+    #
 
 
 class postLessonSerializer(serializers.ModelSerializer):
@@ -21,6 +27,7 @@ class postLessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ['id', 'created_date', 'student', 'instructor', 'duration', 'paid']
+
 
         # instructor = serializers.SerializerMethodField(read_only=True)
         # student = serializers.SerializerMethodField(read_only=True)
