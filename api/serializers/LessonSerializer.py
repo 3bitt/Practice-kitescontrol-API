@@ -5,7 +5,7 @@ from .StudentSerializer import StudentSerializer
 from .InstructorSerializer import InstructorSerializer
 
 
-class getLessonSerializer(serializers.ModelSerializer):
+class LessonSerializer(serializers.ModelSerializer):
 
     # instructor = serializers.StringRelatedField(many=True)
     # student = serializers.StringRelatedField(many=True)
