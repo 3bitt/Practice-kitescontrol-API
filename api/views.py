@@ -1,11 +1,28 @@
 from django.shortcuts import render
 
 from rest_framework import viewsets, generics, filters, mixins, request, status
+
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import Student, Instructor, Lesson
 from .serializers import StudentSerializer, InstructorSerializer, LessonSerializer, MultiSerializerViewSetMixin
+
+from rest_framework.authtoken import views
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+
+
+class getAuthTokenView(views.ObtainAuthToken):
+    serializer_class = AuthTokenSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
 
 
 # ----------  R E A D - O N L Y  ----------
@@ -18,8 +35,21 @@ class InstructorReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = InstructorSerializer.InstructorSerializer
 
 class StudentsReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Student.objects.all()
+    # queryset = Student.objects.all()
     serializer_class = StudentSerializer.StudentSerializer
+
+    def get_queryset(self):
+        """ allow rest api to filter by submissions """
+        queryset = Student.objects.all()
+
+        submission = self.request.query_params.get('surname', None)
+        orderBy = self.request.query_params.get('orderBy', None)
+        if submission is not None:
+            queryset = queryset.filter(surname=submission)
+        if orderBy:
+            queryset = queryset.order_by('-{}'.format(orderBy))
+
+        return queryset
 
 class LessonsReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Lesson.objects.all()
@@ -34,6 +64,7 @@ class LessonsReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
 class InstructorCreateViewSet(generics.CreateAPIView):
     queryset = Instructor.objects.all()
     serializer_class = InstructorSerializer.InstructorSerializer
+    permission_classes = ['AllowAny']
 
 class StudentsCreateViewSet(generics.CreateAPIView):
     queryset = Student.objects.all()
@@ -114,3 +145,18 @@ class LessonUpdateDestroyViewSet(mixins.UpdateModelMixin, mixins.DestroyModelMix
                 #     # forcibly invalidate the prefetch cache on the instance.
                 #     instance._prefetched_objects_cache = {}
         return Response(serializer.data)
+
+
+class StudentSearchByQueryParams(generics.ListAPIView):
+    serializer_class = StudentSerializer.StudentSerializer
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = Student.objects.all()
+        surname = self.request.query_params.get('surname', None)
+        if surname is not None:
+            queryset = queryset.filter(surname=surname)
+        return queryset

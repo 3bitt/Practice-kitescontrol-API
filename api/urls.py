@@ -29,13 +29,14 @@ urlpatterns = [
    re_path('lessons/(?P<pk>\d+)/delete/$', views.LessonUpdateDestroyViewSet.as_view({'delete': 'destroy'})),
    re_path('lessons/(?P<pk>\d+)/update/$', views.LessonUpdateDestroyViewSet.as_view({'put': 'update',
                                                                                      'patch': 'partial_update'})),
-
+   # re_path('students/<str:surname>', views.StudentSearchByQueryParams.as_view()),
    re_path('students/$', views.StudentsReadOnlyViewSet.as_view({'get': 'list'})),
    re_path('students/(?P<pk>\d+)/$', views.StudentsReadOnlyViewSet.as_view({'get': 'retrieve'})),
    re_path('students/create/$', views.StudentsCreateViewSet.as_view()),
    re_path('students/(?P<pk>\d+)/delete/$', views.StudentUpdateDestroyViewSet.as_view({'delete': 'destroy'})),
    re_path('students/(?P<pk>\d+)/update/$', views.StudentUpdateDestroyViewSet.as_view({'put': 'update',
                                                                                        'patch': 'partial_update'})),
+
 
    re_path('instructors/$', views.InstructorReadOnlyViewSet.as_view({'get': 'list'})),
    re_path('instructors/(?P<pk>\d+)/$', views.InstructorReadOnlyViewSet.as_view({'get': 'retrieve'})),
