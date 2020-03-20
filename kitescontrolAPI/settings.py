@@ -15,21 +15,27 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from datetime import timedelta
 
-from rest_framework_simplejwt import settings as jwt_settings
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', '(s_!dr&1$=)4c)!vrb^5kx=6f$v&14z+3)_t6(&*&8-q#u+t&8')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+# SECURITY WARNING: keep the secret key used in production secret!
+# SECRET_KEY = os.environ.get('SECRET_KEY', '(s_!dr&1$=)4c)!vrb^5kx=6f$v&14z+3)_t6(&*&8-q#u+t&8')
+
+SECRET_KEY = '(s_!dr&1$=)4c)!vrb^5kx=6f$v&14z+3)_t6(&*&8-q#u+t&8'
+
+
+from rest_framework_simplejwt import settings as settings
 
 
 # Application definition
@@ -78,7 +84,7 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': jwt_settings.SECRET_KEY,
+    'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
     'AUDIENCE': None,
     'ISSUER': None,
