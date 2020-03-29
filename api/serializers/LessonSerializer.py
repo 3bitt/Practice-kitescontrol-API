@@ -8,7 +8,22 @@ from .InstructorSerializer import InstructorSerializer
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
-        fields = ['id', 'created_date', 'student', 'instructor', 'duration', 'paid']
+        fields = ['id',
+                  'created_date',
+                  'date',
+                  'time',
+                  'student',
+                  'instructor',
+                  'duration',
+                  'equipment',
+                  'kite_brand',
+                  'kite_size',
+                  'board',
+                  'paid',
+                  'status',
+                  'comment'
+                  ]
+
         read_only_fields = ['id']
 
     instructor = InstructorSerializer(many=True)
@@ -18,7 +33,21 @@ class LessonSerializer(serializers.ModelSerializer):
 class CreateLessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
-        fields = ['id', 'created_date', 'student', 'instructor', 'duration', 'paid']
+        fields = ['id',
+                  'created_date',
+                  'date',
+                  'time',
+                  'student',
+                  'instructor',
+                  'duration',
+                  'equipment',
+                  'kite_brand',
+                  'kite_size',
+                  'board',
+                  'paid',
+                  'status',
+                  'comment'
+                  ]
         read_only_fields = ['id']
 
     student = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all().order_by('-name'), many=True)

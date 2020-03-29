@@ -64,7 +64,6 @@ class LessonsReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
 class InstructorCreateViewSet(generics.CreateAPIView):
     queryset = Instructor.objects.all()
     serializer_class = InstructorSerializer.InstructorSerializer
-    permission_classes = ['AllowAny']
 
 class StudentsCreateViewSet(generics.CreateAPIView):
     queryset = Student.objects.all()
@@ -88,7 +87,9 @@ class InstructorUpdateDestroyViewSet(mixins.DestroyModelMixin, mixins.UpdateMode
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        queryset = Instructor.objects.all()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK )
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -110,7 +111,10 @@ class StudentUpdateDestroyViewSet(mixins.UpdateModelMixin, mixins.DestroyModelMi
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        queryset = Student.objects.all()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK )
+# status.HTTP_204_NO_CONTENT
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
