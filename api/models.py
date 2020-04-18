@@ -2,13 +2,13 @@ from django.db import models
 
 # Create your models here.
 
-ikoLevels = (
-            ('None', 'None'),
-            ('AITC', 'Assistent'),
-            ('1', 'Level 1'),
-            ('2', 'Level 2'),
-            ('3', 'Level 3'),
-            ('HI', 'Head Instructor')
+IKO_LEVELS = (
+    ('None', 'None'),
+    ('AITC', 'Assistant'),
+    ('1', 'Level 1'),
+    ('2', 'Level 2'),
+    ('3', 'Level 3'),
+    ('HI', 'Head Instructor')
 )
 
 
@@ -22,7 +22,7 @@ class Student(models.Model):
     email_address = models.CharField(max_length=40, null=True, blank=True)
     mobile_number = models.CharField(max_length=20, null=True, blank=True)
     stay_location = models.CharField(max_length=40, null=True, blank=True)
-    iko_level = models.CharField(max_length=15, null=True, blank=True)
+    iko_level = models.CharField(max_length=4, choices=IKO_LEVELS, default='None')
     comment = models.CharField(max_length=255, null=True, blank=True)
     register_date = models.DateTimeField(auto_now_add=True)
 
@@ -30,14 +30,14 @@ class Student(models.Model):
         return f'{self.name} {self.surname}'
 
 class Instructor(models.Model):
-    IKO_LEVELS = (
-        ('None', 'None'),
-        ('AITC', 'Assistant'),
-        ('1', 'Level 1'),
-        ('2', 'Level 2'),
-        ('3', 'Level 3'),
-        ('HI', 'Head Instructor')
-    )
+    # IKO_LEVELS = (
+    #     ('None', 'None'),
+    #     ('AITC', 'Assistant'),
+    #     ('1', 'Level 1'),
+    #     ('2', 'Level 2'),
+    #     ('3', 'Level 3'),
+    #     ('HI', 'Head Instructor')
+    # )
 
     name = models.CharField(max_length=30, null=False, blank=False)
     surname = models.CharField(max_length=30, null=False, blank=False)
@@ -75,9 +75,10 @@ class Lesson(models.Model):
     comment = models.CharField(max_length=255, null=True, blank=True)
 
 
-# class Lesson_to_Person(models.Model):
-#     lesson_id = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-#     instructor_id = models.ForeignKey(Instructor, on_delete=models.DO_NOTHING, null=True, blank=True)
-#     student_id = models.ForeignKey(Student, on_delete=models.DO_NOTHING, null=True, blank=True)
-#
+class Schedule(models.Model):
+    date = models.DateField(null=False, blank=False)
+    lessons = models.ManyToManyField(Lesson, related_name='lesson')
+    finalized = models.BooleanField(null=True, blank=True, default=False)
 
+    def __str__(self):
+        return f'Schedule {self.pk} - {self.date}'

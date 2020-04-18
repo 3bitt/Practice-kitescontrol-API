@@ -5,7 +5,9 @@ from rest_framework import viewsets, generics, filters, mixins, request, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Student, Instructor, Lesson
+from .models import Student, Instructor, Lesson, Schedule
+from .schedule.serializers import GenericScheduleSerializer
+from .schedule.serializers.ScheduleSecureSerializer import ScheduleSecureSerializer
 from .serializers import StudentSerializer, InstructorSerializer, LessonSerializer, MultiSerializerViewSetMixin
 
 from rest_framework.authtoken import views
@@ -164,3 +166,7 @@ class StudentSearchByQueryParams(generics.ListAPIView):
         if surname is not None:
             queryset = queryset.filter(surname=surname)
         return queryset
+
+class ScheduleCreateView(generics.CreateAPIView):
+    queryset = Schedule.objects.all()
+    serializer_class = GenericScheduleSerializer.GenericScheduleSerializer
