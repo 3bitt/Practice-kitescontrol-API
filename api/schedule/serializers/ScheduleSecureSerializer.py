@@ -11,3 +11,8 @@ class ScheduleSecureSerializer(serializers.ModelSerializer):
         model = Schedule
         fields = ['date', 'lessons', 'finalized']
         depth = 2
+
+
+
+# class CustomScheduleSerializer(serializers.Serializer):
+#

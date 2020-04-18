@@ -20,3 +20,11 @@ def api_detail_schedule_view(request, pk):
         serializer = ScheduleSecureSerializer(schedule)
         return Response(serializer.data)
 
+@api_view(['GET'])
+def api_custom_schedule_view(request, date):
+
+    try:
+        lessons = Lesson.objects.filter(date=date)
+        instr = lessons.distinct('instructor')
+    except:
+        return
