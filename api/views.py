@@ -6,8 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import Student, Instructor, Lesson, Schedule
-from .schedule.serializers import GenericScheduleSerializer
-from .schedule.serializers.ScheduleSecureSerializer import ScheduleSecureSerializer
+from .schedule.serializers import OOO_GenericScheduleSerializer
 from .serializers import StudentSerializer, InstructorSerializer, LessonSerializer, MultiSerializerViewSetMixin
 
 from rest_framework.authtoken import views
@@ -169,4 +168,4 @@ class StudentSearchByQueryParams(generics.ListAPIView):
 
 class ScheduleCreateView(generics.CreateAPIView):
     queryset = Schedule.objects.all()
-    serializer_class = GenericScheduleSerializer.GenericScheduleSerializer
+    serializer_class = OOO_GenericScheduleSerializer.GenericScheduleSerializer

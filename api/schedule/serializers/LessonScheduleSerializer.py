@@ -15,3 +15,5 @@ class LessonsScheduleSerializer(serializers.ModelSerializer):
 
     instructor = InstructorSecureSerializer(many=True)
     student = StudentSecureSerializer(many=True)
+
+

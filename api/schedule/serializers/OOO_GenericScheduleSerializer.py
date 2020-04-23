@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from api.models import Schedule
-from .LessonsSecureSerializer import LessonsSecureSerializer
+from .OOO_LessonsSecureSerializer import LessonsSecureSerializer
 
 
 class GenericScheduleSerializer(serializers.ModelSerializer):
