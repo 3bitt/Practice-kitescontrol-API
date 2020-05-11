@@ -8,7 +8,7 @@ from api.schedule.serializers.StudentSecureSerializer import StudentSecureSerial
 class LessonsScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
-        fields = ['date','time','created_date',
+        fields = ['id','date','time','created_date',
                  'duration','paid','status','equipment',
                  'kite_brand','kite_size','board','comment',
                   'student','instructor']
