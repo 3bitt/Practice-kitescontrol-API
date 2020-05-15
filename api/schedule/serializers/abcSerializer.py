@@ -20,7 +20,6 @@ class abcSerializer(serializers.Serializer):
 
     def get_instr_lessons(self, lesson):
         instr = Instructor.objects.filter(lessons__in=lesson).distinct()
-        print('\nPRINT\n', instr)
         serializer = abcdeSerializer(instr, many=True, context={'lessons':lesson})
         return serializer.data
 

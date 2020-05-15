@@ -9,7 +9,7 @@ class LessonsScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ['id','date','time','created_date',
-                 'duration','paid','status','equipment',
+                 'duration','paid','status','in_progress','equipment',
                  'kite_brand','kite_size','board','comment',
                   'student','instructor']
 

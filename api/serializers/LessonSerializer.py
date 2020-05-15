@@ -21,6 +21,7 @@ class LessonSerializer(serializers.ModelSerializer):
                   'board',
                   'paid',
                   'status',
+                  'in_progress',
                   'comment'
                   ]
 
@@ -46,6 +47,7 @@ class CreateLessonSerializer(serializers.ModelSerializer):
                   'board',
                   'paid',
                   'status',
+                  'in_progress',
                   'comment'
                   ]
         read_only_fields = ['id']
