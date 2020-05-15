@@ -12,6 +12,7 @@ class InstructorSerializer(serializers.ModelSerializer):
             'nickname',
             'mobile_number',
             'birth_date',
+            'email_address',
             'weight',
             'available_from',
             'available_to',
