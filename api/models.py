@@ -25,7 +25,7 @@ class Student(models.Model):
     iko_level = models.CharField(max_length=4, choices=IKO_LEVELS, default='None')
     comment = models.CharField(max_length=255, null=True, blank=True)
     register_date = models.DateTimeField(auto_now_add=True)
-
+    # https://stackoverflow.com/questions/34275588/djangorestframework-modelserializer-datetimefield-only-converting-to-current-tim
     def __str__(self):
         return f'{self.name} {self.surname}'
 
@@ -44,6 +44,7 @@ class Instructor(models.Model):
     nickname = models.CharField(max_length=30, null=True, blank=True)
     birth_date = models.DateField(null=False, blank=False)
     mobile_number = models.CharField(max_length=20, null=True, blank=True)
+    email_address = models.CharField(max_length=40, null=True, blank=True)
     weight = models.FloatField(null=True, blank=True)
     available_from = models.DateField(null=True, blank=True)
     available_to = models.DateField(null=True, blank=True)
@@ -63,10 +64,11 @@ class Lesson(models.Model):
     created_date = models.DateTimeField(auto_now=True)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
-    student = models.ManyToManyField(Student, related_name='student')
-    instructor = models.ManyToManyField(Instructor, related_name='instructor')
+    student = models.ManyToManyField(Student, related_name='lessons')
+    instructor = models.ManyToManyField(Instructor, related_name='lessons')
     duration = models.FloatField()
-    paid = models.BooleanField(default=False)
+    in_progress = models.BooleanField(default=False, null=True, blank=True)
+    paid = models.BooleanField(default=False, null=True, blank=True)
     status = models.CharField(max_length=30, null=True, blank=True)
     equipment = models.CharField(max_length=30, null=True, blank=True)
     kite_brand = models.CharField(max_length=30, null=True, blank=True)
