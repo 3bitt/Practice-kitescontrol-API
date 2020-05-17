@@ -20,7 +20,7 @@ class Instructor(models.Model):
     weight = models.FloatField(null=True, blank=True)
     available_from = models.DateField(null=True, blank=True)
     available_to = models.DateField(null=True, blank=True)
-    iko_level = models.CharField(max_length=4, choices=IKO_LEVELS, default='None')
+    iko_level = models.CharField(max_length=4, choices=IKO_LEVELS, default='None', null=True, blank=True)
     pay_rate = models.IntegerField(null=True, blank=True)
     english_lessons = models.BooleanField(null=True, blank=True)
     kids_lessons = models.BooleanField(null=True, blank=True)

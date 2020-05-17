@@ -6,7 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import Student, Instructor, Lesson
-from .serializers import StudentSerializer, InstructorSerializer, LessonSerializer, MultiSerializerViewSetMixin
+from .serializers import StudentSerializer, InstructorSerializer, LessonSerializer
 
 from rest_framework.authtoken import views
 from rest_framework.authtoken.models import Token

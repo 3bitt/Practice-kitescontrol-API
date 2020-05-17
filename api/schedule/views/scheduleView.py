@@ -15,7 +15,5 @@ def api_custom_schedule_view(request):
         lessons = Lesson.objects.filter(date=query_date).order_by('time')
         serializer = abcSerializer(lessons)
         return Response(serializer.data)
-
-
     except Lesson.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)

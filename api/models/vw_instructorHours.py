@@ -4,14 +4,15 @@ from django.db.models import DO_NOTHING
 from .instructor import Instructor
 
 
-class InstructorHoursByDate(models.Model):
+class InstructorHours(models.Model):
     class Meta:
         managed = False
-        db_table = 'VW_INSTRUCTOR_HOURS'
+        db_table = 'vw_instructor_hours'
 
-    instructor_id = models.ForeignKey(Instructor, on_delete=DO_NOTHING, related_name='instructor')
-    name = models.CharField()
-    surname = models.CharField()
+    # instructor_id = models.ForeignKey(Instructor, on_delete=DO_NOTHING, related_name='instructor')
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=30 )
+    surname = models.CharField(max_length=30)
     date = models.DateField()
     single_hours = models.FloatField()
     group_hours = models.FloatField()

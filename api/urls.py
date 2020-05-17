@@ -6,6 +6,7 @@ from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
 
 from api.schedule.views.scheduleView import api_custom_schedule_view
+from api.statistics.views.instructorHoursView import api_get_instructor_hours
 
 from . import views
 from rest_framework import routers
@@ -25,6 +26,8 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+
+   re_path('instructors/hours', api_get_instructor_hours, name='instructor hours'),
    re_path('custom', api_custom_schedule_view, name='custom'),
 
    re_path('lessons/$', views.LessonsReadOnlyViewSet.as_view({'get': 'list'})),
