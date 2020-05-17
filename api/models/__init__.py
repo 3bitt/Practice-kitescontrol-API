@@ -1,3 +1,3 @@
-from .instructor import Instructor
-from .lesson import Lesson
-from .student import Student
+from api.models.instructor import Instructor
+from api.models.lesson import Lesson
+from api.models.student import Student

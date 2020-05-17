@@ -1,7 +1,7 @@
 from django.db.models import Q
 from rest_framework import serializers
 
-from api.models import Schedule, Instructor, Lesson
+from api.models import Instructor, Lesson
 from .abcdeSerializer import abcdeSerializer
 
 

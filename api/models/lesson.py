@@ -1,6 +1,6 @@
 from django.db import models
-from api.models import Student
-from api.models import Instructor
+from api.models.student import Student
+from api.models.instructor import Instructor
 
 class Lesson(models.Model):
     created_date = models.DateTimeField(auto_now=True)
