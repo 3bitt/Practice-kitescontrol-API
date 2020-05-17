@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-from api.models import Schedule
 from api.models import Student
 
 
