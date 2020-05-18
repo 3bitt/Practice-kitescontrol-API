@@ -25,8 +25,6 @@ def api_get_instructor_hours(request):
         result = InstructorHours.objects.filter(date__range=(date_start, date_end))
 
         serializer = InstructorHoursSerializer(result, many=True)
-        print('\n&&&&&&&&&&\n', date_start, date_end, '\n\n')
-        print('DATA ', serializer.data)
         return Response(serializer.data)
     except InstructorHours.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
