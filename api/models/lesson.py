@@ -9,7 +9,6 @@ class Lesson(models.Model):
     student = models.ManyToManyField(Student, related_name='lessons')
     instructor = models.ManyToManyField(Instructor, related_name='lessons')
     duration = models.FloatField()
-    in_progress = models.BooleanField(default=False, null=True, blank=True)
     paid = models.BooleanField(default=False, null=True, blank=True)
     status = models.CharField(max_length=30, null=True, blank=True)
     equipment = models.CharField(max_length=30, null=True, blank=True)
@@ -17,4 +16,6 @@ class Lesson(models.Model):
     kite_size = models.FloatField(null=True, blank=True)
     board = models.CharField(max_length=30, null=True, blank=True)
     comment = models.CharField(max_length=255, null=True, blank=True)
+    in_progress = models.BooleanField(default=False, null=True, blank=True)
+
 
