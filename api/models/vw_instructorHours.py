@@ -16,4 +16,5 @@ class InstructorHours(models.Model):
     date = models.DateField()
     single_hours = models.FloatField()
     group_hours = models.FloatField()
-    pay_rate = models.IntegerField()
+    pay_rate_single = models.IntegerField()
+    pay_rate_group = models.IntegerField()

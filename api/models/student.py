@@ -13,7 +13,7 @@ class Student(models.Model):
     name = models.CharField(max_length=30, null=False, blank=False)
     surname = models.CharField(max_length=30, null=False, blank=False)
     birth_date = models.DateField(null=True, blank=True)
-    weight = models.FloatField()
+    weight = models.FloatField(null=True, blank=True)
     wetsuit_size = models.CharField(max_length=3, null=True, blank=True)
     harness_size = models.CharField(max_length=3, null=True, blank=True)
     arrival_date = models.DateField(null=True, blank=True)
@@ -22,7 +22,7 @@ class Student(models.Model):
     mobile_number = models.CharField(max_length=20, null=True, blank=True)
     stay_location = models.CharField(max_length=40, null=True, blank=True)
     iko_id = models.IntegerField(null=True, blank=True)
-    iko_level = models.CharField(max_length=4, choices=IKO_LEVELS, default='None')
+    iko_level = models.CharField(max_length=4, choices=IKO_LEVELS, default='None', null=True, blank=True)
     comment = models.CharField(max_length=255, null=True, blank=True)
     register_date = models.DateTimeField(auto_now_add=True)
     # https://stackoverflow.com/questions/34275588/djangorestframework-modelserializer-datetimefield-only-converting-to-current-tim

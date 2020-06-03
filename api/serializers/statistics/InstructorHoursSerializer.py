@@ -21,5 +21,6 @@ class InstructorHoursSerializer(serializers.ModelSerializer):
             'date',
             'single_hours',
             'group_hours',
-            'pay_rate_single'
+            'pay_rate_single',
+            'pay_rate_group'
         ]
