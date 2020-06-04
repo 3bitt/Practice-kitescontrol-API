@@ -2,14 +2,6 @@ from django.db import models
 
 
 class Instructor(models.Model):
-    IKO_LEVELS = (
-        ('None', 'None'),
-        ('AITC', 'Assistant'),
-        ('1', 'Level 1'),
-        ('2', 'Level 2'),
-        ('3', 'Level 3'),
-        ('HI', 'Head Instructor')
-    )
 
     name = models.CharField(max_length=30, null=False, blank=False)
     surname = models.CharField(max_length=30, null=False, blank=False)
@@ -21,7 +13,7 @@ class Instructor(models.Model):
     available_from = models.DateField(null=True, blank=True)
     available_to = models.DateField(null=True, blank=True)
     iko_id = models.IntegerField(null=True, blank=True)
-    iko_level = models.CharField(max_length=4, choices=IKO_LEVELS, default='None', null=True, blank=True)
+    iko_level = models.CharField(max_length=30, null=True, blank=True)
     pay_rate_single = models.IntegerField(null=True, blank=True)
     pay_rate_group = models.IntegerField(null=True, blank=True)
     english_lessons = models.BooleanField(null=True, blank=True)
