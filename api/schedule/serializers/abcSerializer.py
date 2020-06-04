@@ -19,7 +19,8 @@ class abcSerializer(serializers.Serializer):
     instructors = serializers.SerializerMethodField('get_instr_lessons')
 
     def get_instr_lessons(self, lesson):
-        instr = Instructor.objects.filter(lessons__in=lesson).distinct()
+        # instr = Instructor.objects.filter(lessons__in=lesson).distinct()
+        instr = Instructor.objects.filter(active=True)
         serializer = abcdeSerializer(instr, many=True, context={'lessons':lesson})
         return serializer.data
 
