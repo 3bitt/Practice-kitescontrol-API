@@ -5,6 +5,7 @@ from .LessonScheduleSerializer import LessonsScheduleSerializer
 
 
 class abcdeSerializer(serializers.Serializer):
+    id = serializers.PrimaryKeyRelatedField(read_only=True)
     name = serializers.CharField(max_length=30)
     surname = serializers.CharField(max_length=30)
     weight = serializers.FloatField()

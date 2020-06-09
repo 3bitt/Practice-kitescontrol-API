@@ -30,14 +30,16 @@ urlpatterns = [
    re_path('instructors/hours', api_get_instructor_hours, name='instructor hours'),
    re_path('custom', api_custom_schedule_view, name='custom'),
 
-   re_path('lessons/$', views.LessonsReadOnlyViewSet.as_view({'get': 'list'})),
-   re_path('lessons/(?P<pk>\d+)/$', views.LessonsReadOnlyViewSet.as_view({'get': 'retrieve'})),
+   re_path('lessons/$', views.LessonsReadOnlyViewSet.as_view({'get': 'list',
+                                                              'post':'list'})),
+   re_path('lessons/(?P<pk>\d+)/$', views.LessonsReadOnlyViewSet), #.as_view({'get': 'retrieve'})
    re_path('lessons/create/$', views.LessonsCreateViewSet.as_view()),
    re_path('lessons/(?P<pk>\d+)/delete/$', views.LessonUpdateDestroyViewSet.as_view({'delete': 'destroy'})),
    re_path('lessons/(?P<pk>\d+)/update/$', views.LessonUpdateDestroyViewSet.as_view({'put': 'update',
                                                                                      'patch': 'partial_update'})),
    # re_path('students/<str:surname>', views.StudentSearchByQueryParams.as_view()),
-   re_path('students/$', views.StudentsReadOnlyViewSet.as_view({'get': 'list'})),
+   re_path('students/$', views.StudentsReadOnlyViewSet.as_view({'get': 'list',
+                                                                'post': 'list'})),
    re_path('students/(?P<pk>\d+)/$', views.StudentsReadOnlyViewSet.as_view({'get': 'retrieve'})),
    re_path('students/create/$', views.StudentsCreateViewSet.as_view()),
    re_path('students/(?P<pk>\d+)/delete/$', views.StudentUpdateDestroyViewSet.as_view({'delete': 'destroy'})),
@@ -46,6 +48,7 @@ urlpatterns = [
 
 
    re_path('instructors/$', views.InstructorReadOnlyViewSet.as_view({'get': 'list'})),
+   re_path('activeInstructors/$', views.ActiveInstructorsViewSet.as_view({'get':'list'})),
    re_path('instructors/(?P<pk>\d+)/$', views.InstructorReadOnlyViewSet.as_view({'get': 'retrieve'})),
    re_path('instructors/create/$', views.InstructorCreateViewSet.as_view()),
    re_path('instructors/(?P<pk>\d+)/delete/$', views.InstructorUpdateDestroyViewSet.as_view({'delete':'destroy'})),

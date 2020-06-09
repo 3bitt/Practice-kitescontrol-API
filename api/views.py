@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render
 
 from rest_framework import viewsets, generics, filters, mixins, request, status
@@ -34,26 +35,54 @@ class InstructorReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Instructor.objects.all()
     serializer_class = InstructorSerializer.InstructorSerializer
 
+class ActiveInstructorsViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Instructor.objects.filter(active = True)
+    serializer_class = InstructorSerializer.InstructorSerializer
+
+
 class StudentsReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     # queryset = Student.objects.all()
     serializer_class = StudentSerializer.StudentSerializer
 
     def get_queryset(self):
         """ allow rest api to filter by submissions """
-        queryset = Student.objects.all()
+        if (len(self.request.data) == 0):
+            queryset = Student.objects.all()
+        else:
+            queryset = Student.objects.all()
+            for query in self.request.data:
+                if ( (query == 'studentName') and (len(self.request.data[query]) > 0) ):
+                    queryset = queryset.filter(name__icontains=self.request.data[query], )
 
-        submission = self.request.query_params.get('surname', None)
-        orderBy = self.request.query_params.get('orderBy', None)
-        if submission is not None:
-            queryset = queryset.filter(surname=submission)
-        if orderBy:
-            queryset = queryset.order_by('-{}'.format(orderBy))
+                elif ( (query == 'studentSurname') and (len(str(self.request.data[query])) > 0) ):
+                    queryset = queryset.filter(surname__icontains=self.request.data[query] )
 
+                elif ( (query == 'mobileNumber') and (len(self.request.data[query]) > 0) ):
+                    queryset = queryset.filter(mobile_number__contains=self.request.data[query])
         return queryset
 
 class LessonsReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Lesson.objects.all()
+    # queryset = Lesson.objects.all()
     serializer_class = LessonSerializer.LessonSerializer
+
+    def get_queryset(self):
+        if (len(self.request.data) == 0):
+            queryset = Lesson.objects.all()
+        else:
+            queryset = Lesson.objects.all()
+            for query in self.request.data:
+                if ( (query == 'studentName') and (len(self.request.data[query]) > 0) ):
+                    queryset = queryset.filter(student__name__icontains=self.request.data[query], )
+
+                elif ( (query == 'studentSurname') and (len(str(self.request.data[query])) > 0) ):
+                    queryset = queryset.filter(student__surname__icontains=self.request.data[query] )
+
+                elif ( (query == 'instructorName') and (len(self.request.data[query]) > 0) ):
+                    queryset = queryset.filter(instructor__name__icontains=self.request.data[query])
+
+                elif ((query == 'instructorSurname') and (len(self.request.data[query]) > 0)):
+                    queryset = queryset.filter(instructor__surname__icontains=self.request.data[query])
+        return queryset
 
 
 # ----------  W R I T E - O N L Y  --------
