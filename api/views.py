@@ -3,7 +3,8 @@ from django.shortcuts import render
 
 from rest_framework import viewsets, generics, filters, mixins, request, status
 
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Student, Instructor, Lesson
@@ -13,6 +14,19 @@ from rest_framework.authtoken import views
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
+
+# @api_view(['POST'])
+# def create_auth(request):
+#     serialized = UserSerializer(data=request.DATA)
+#     if serialized.is_valid():
+#         User.objects.create_user(
+#             serialized.init_data['email'],
+#             serialized.init_data['username'],
+#             serialized.init_data['password']
+#         )
+#         return Response(serialized.data, status=status.HTTP_201_CREATED)
+#     else:
+#         return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
 class getAuthTokenView(views.ObtainAuthToken):
     serializer_class = AuthTokenSerializer
@@ -32,8 +46,16 @@ class getAuthTokenView(views.ObtainAuthToken):
 # -----------------------------------------
 
 class InstructorReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
+    parmission_classes = (IsAuthenticated)
     queryset = Instructor.objects.all()
     serializer_class = InstructorSerializer.InstructorSerializer
+
+class HelloView(views.APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        content = {'message': 'Hello, World!'}
+        return Response(content)
 
 class ActiveInstructorsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Instructor.objects.filter(active = True)
@@ -45,11 +67,16 @@ class StudentsReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = StudentSerializer.StudentSerializer
 
     def get_queryset(self):
-        """ allow rest api to filter by submissions """
+
+        orderBy = self.request.query_params.get('orderBy', None)
+        queryset = Student.objects.all()
+
+        if (orderBy == 'register_date'):
+            queryset = queryset.order_by('-register_date')
+
         if (len(self.request.data) == 0):
-            queryset = Student.objects.all()
+            return queryset
         else:
-            queryset = Student.objects.all()
             for query in self.request.data:
                 if ( (query == 'studentName') and (len(self.request.data[query]) > 0) ):
                     queryset = queryset.filter(name__icontains=self.request.data[query], )
@@ -66,10 +93,16 @@ class LessonsReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = LessonSerializer.LessonSerializer
 
     def get_queryset(self):
+
+        orderBy = self.request.query_params.get('orderBy', None)
+        queryset = Lesson.objects.all()
+
+        if ( orderBy == 'date'):
+            queryset = queryset.order_by('-date')
+
         if (len(self.request.data) == 0):
-            queryset = Lesson.objects.all()
+            return queryset
         else:
-            queryset = Lesson.objects.all()
             for query in self.request.data:
                 if ( (query == 'studentName') and (len(self.request.data[query]) > 0) ):
                     queryset = queryset.filter(student__name__icontains=self.request.data[query], )
