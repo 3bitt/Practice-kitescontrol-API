@@ -35,14 +35,12 @@ ALLOWED_HOSTS = []
 SECRET_KEY = '(s_!dr&1$=)4c)!vrb^5kx=6f$v&14z+3)_t6(&*&8-q#u+t&8'
 
 
-from rest_framework_simplejwt import settings as settings
-
 
 # Application definition
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,
+    'PAGE_SIZE': 50,
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.openapi.AutoSchema',
     'DATE_FORMAT': "%d-%m-%Y",
     'DATE_INPUT_FORMATS': ["%d-%m-%Y"],

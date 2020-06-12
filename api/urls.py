@@ -7,6 +7,7 @@ from rest_framework.routers import DefaultRouter
 
 from api.schedule.views.scheduleView import api_custom_schedule_view
 from api.statistics.views.instructorHoursView import api_get_instructor_hours
+from rest_framework_simplejwt import views as jwt_views
 
 from . import views
 from rest_framework import routers
@@ -26,6 +27,9 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+
+   path('authenticateUser/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+   path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 
    re_path('instructors/hours', api_get_instructor_hours, name='instructor hours'),
    re_path('custom', api_custom_schedule_view, name='custom'),
@@ -47,16 +51,14 @@ urlpatterns = [
                                                                                        'patch': 'partial_update'})),
 
 
-   re_path('instructors/$', views.InstructorReadOnlyViewSet.as_view({'get': 'list'})),
+   # re_path('instructors/$', views.InstructorReadOnlyViewSet.as_view({'get': 'list'})),
+   re_path('instructors/$', views.HelloView.as_view()),
    re_path('activeInstructors/$', views.ActiveInstructorsViewSet.as_view({'get':'list'})),
    re_path('instructors/(?P<pk>\d+)/$', views.InstructorReadOnlyViewSet.as_view({'get': 'retrieve'})),
    re_path('instructors/create/$', views.InstructorCreateViewSet.as_view()),
    re_path('instructors/(?P<pk>\d+)/delete/$', views.InstructorUpdateDestroyViewSet.as_view({'delete':'destroy'})),
    re_path('instructors/(?P<pk>\d+)/update/$', views.InstructorUpdateDestroyViewSet.as_view({'put': 'update',
                                                                                              'patch':'partial_update'})),
-
-
-
    # path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
    path(r'swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
    # path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc')
