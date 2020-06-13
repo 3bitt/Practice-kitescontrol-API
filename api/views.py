@@ -1,18 +1,15 @@
-from django.db.models import Q
-from django.shortcuts import render
+from django.db.models import Exists
+from rest_framework import viewsets, generics, mixins, status
+from rest_framework.decorators import api_view
 
-from rest_framework import viewsets, generics, filters, mixins, request, status
-
-from rest_framework.decorators import action, api_view
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.serializers import TokenObtainSerializer
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken
 
 from .models import Student, Instructor, Lesson
 from .serializers import StudentSerializer, InstructorSerializer, LessonSerializer
-
-from rest_framework.authtoken import views
-from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework_simplejwt.tokens import RefreshToken, BlacklistMixin, OutstandingToken
 
 
 # @api_view(['POST'])
@@ -28,16 +25,42 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 #     else:
 #         return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
-class getAuthTokenView(views.ObtainAuthToken):
-    serializer_class = AuthTokenSerializer
+# class getAuthTokenView(views.ObtainAuthToken):
+#     serializer_class = AuthTokenSerializer
+#
+#     def post(self, request, *args, **kwargs):
+#         serializer = self.serializer_class(data=request.data,
+#                                            context={'request': request})
+#         serializer.is_valid(raise_exception=True)
+#         user = serializer.validated_data['user']
+#         token, created = Token.objects.get_or_create(user=user)
+#         return Response({'token': token.key})
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key})
+# class invalidateToken(viewsets.ReadOnlyModelViewSet, BlacklistMixin):
+#     serializer_class = TokenObtainSerializer
+#
+#     def get_queryset(self):
+#         userToken = self.request.META['Authorization']
+#         print(userToken)
+#
+#         return Response({'elo':'mordo'})
+
+
+@api_view(['POST'])
+def invalidateToken(request):
+    try:
+        requestToken = request.data['refresh']
+        userToken = OutstandingToken.objects.filter(token=requestToken)
+        if userToken and not BlacklistedToken.objects.filter(token__in=userToken):
+            newToken = BlacklistedToken(token=userToken[0])
+            newToken.save()
+            return Response({'message': 'success'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'error'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    except OutstandingToken.DoesNotExist:
+        return Response({'message': 'Not Found'}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 # ----------  R E A D - O N L Y  ----------
@@ -46,16 +69,8 @@ class getAuthTokenView(views.ObtainAuthToken):
 # -----------------------------------------
 
 class InstructorReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
-    parmission_classes = (IsAuthenticated)
     queryset = Instructor.objects.all()
     serializer_class = InstructorSerializer.InstructorSerializer
-
-class HelloView(views.APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def get(self, request):
-        content = {'message': 'Hello, World!'}
-        return Response(content)
 
 class ActiveInstructorsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Instructor.objects.filter(active = True)

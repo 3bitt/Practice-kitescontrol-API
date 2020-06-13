@@ -29,7 +29,9 @@ schema_view = get_schema_view(
 urlpatterns = [
 
    path('authenticateUser/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-   path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+   path('refreshToken/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+   path('verifyToken/', jwt_views.TokenVerifyView.as_view(), name='token_verify'),
+   path('logout/', views.invalidateToken),
 
    re_path('instructors/hours', api_get_instructor_hours, name='instructor hours'),
    re_path('custom', api_custom_schedule_view, name='custom'),
@@ -51,8 +53,7 @@ urlpatterns = [
                                                                                        'patch': 'partial_update'})),
 
 
-   # re_path('instructors/$', views.InstructorReadOnlyViewSet.as_view({'get': 'list'})),
-   re_path('instructors/$', views.HelloView.as_view()),
+   re_path('instructors/$', views.InstructorReadOnlyViewSet.as_view({'get': 'list'})),
    re_path('activeInstructors/$', views.ActiveInstructorsViewSet.as_view({'get':'list'})),
    re_path('instructors/(?P<pk>\d+)/$', views.InstructorReadOnlyViewSet.as_view({'get': 'retrieve'})),
    re_path('instructors/create/$', views.InstructorCreateViewSet.as_view()),
