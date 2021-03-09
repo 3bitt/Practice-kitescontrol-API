@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = os.environ.get('SECRET_KEY', '(s_!dr&1$=)4c)!vrb^5kx=6f$v&14z+3)_t6(&*&8-q#u+t&8')
 
-SECRET_KEY = '(s_!dr&1$=)4c)!vrb^5kx=6f$v&14z+3)_t6(&*&8-q#u+t&8'
+SECRET_KEY = '12345-change-it'
 
 
 from rest_framework_simplejwt import settings as settings
